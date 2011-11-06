@@ -17,8 +17,6 @@ end
 function World:draw (x,y)
   for lx=1,self.width do
     for ly = 1,self.height do
-      local style = "line"
-
       self.map[ly][lx]:draw((lx*32-32)-x, (ly*32-32)-y)
     end
   end
@@ -32,7 +30,7 @@ function World:with(map)
   self.physics = love.physics.newWorld(0,0,self.width*32,self.height*32)
   self.physics:setGravity(0, 250)
   self.physics:setMeter(32)
-  
+
   -- Set up rigid bodies
 
   return self
