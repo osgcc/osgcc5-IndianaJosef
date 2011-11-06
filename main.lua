@@ -6,6 +6,7 @@ require "battery"
 require "book"
 require "brain"
 require "viewport"
+require "hud"
 
 State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
@@ -36,6 +37,10 @@ function love.load()
   
   viewport.x = 18
   viewport.y = 15
+
+  player.energy = load_data.energy
+
+  hud = Hud:new()
 end
 
 -- Events
@@ -101,9 +106,5 @@ function love.draw()
   end
   viewport:draw(brain)
 
-  love.graphics.setColor(0,0,0)
-  love.graphics.rectangle("line", 0, 600-40, 800, 40)
-  love.graphics.setColor(128, 128, 128)
-  love.graphics.rectangle("fill", 0, 600-40, 800, 40)
-  love.graphics.setColor(255, 255, 255)
+  hud:draw(0,600-40, player.energy, player.books, #books, player.brain == 1)
 end

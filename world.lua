@@ -75,18 +75,21 @@ function World:with(map)
     if battery and player then
       if battery.visible == true then
         battery.visible = false
+        player.energy = player.energy + 20
       end
     end
 
     if book and player then
       if book.visible == true then
         book.visible = false
+        player.books = player.books + 1
       end
     end
 
     if brain and player then
       if brain.visible == true then
         brain.visible = false
+        player.brain = 1
       end
     end
   end

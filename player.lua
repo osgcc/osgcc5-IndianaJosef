@@ -2,7 +2,7 @@
 
 -- Represents the player
 
-Player = {start = {x=0, y=0}}
+Player = {start = {x=0, y=0}, energy = 180, books = 0, brain = 0}
 
 function Player:new(o)
   o = o or {}
