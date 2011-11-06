@@ -21,8 +21,11 @@ end
 
 function Tile:with(type)
   self.tile_type = Type.EMPTY
-  if type == "." then
+  if type == "." or type == "Q" or type == "W" or type == "E" or type == "R" then
     self.tile_type = Type.WALL
+  elseif type == "!" or type == "@" or type == "#" or type == "$" then
+    self.tile_type = Type.WALL
+    self.visible = false
   elseif type == "," then
     self.tile_type = Type.BREAKABLE
   elseif type == "/" then
@@ -42,7 +45,7 @@ function Tile:with(type)
   elseif type == "~" then
     self.tile_type = Type.DEADLY
     self.deadly_type = "lava"
-  elseif type == "W" then
+  elseif type == "X" then
     self.tile_type = Type.DEADLY
     self.deadly_type = "spikes"
   else

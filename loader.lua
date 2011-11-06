@@ -19,8 +19,14 @@ function Loader:load(filename)
   local brain = {x = 1, y = 1}
   local energy = 150
   local elevators = {}
-  
+
   local last_elevator = nil
+  local switches = {}
+
+  for i=1,4 do
+    switches[i] = {}
+    switches[i].tags = {}
+  end
 
   for line in f:lines() do
     if line:sub(1,1) == "e" then
@@ -48,8 +54,18 @@ function Loader:load(filename)
           elseif chr == "w" or chr == "a" or chr == "s" or chr == "d" then
             local elevator = {x = i+1, y = y, width = 1, direction = chr, ignore_tile = row[i+1]}
             last_elevator = {chr=chr, obj=elevator}
-  
+
             elevators[#elevators+1] = elevator
+          elseif chr == "Q" then
+            switches[1].tags[#switches[1].tags+1] = {x = i+1, y = y, obj = row[i+1]}
+          elseif chr == "W" then
+            switches[2].tags[#switches[2].tags+1] = {x = i+1, y = y, obj = row[i+1]}
+          elseif chr == "E" then
+            switches[3].tags[#switches[3].tags+1] = {x = i+1, y = y, obj = row[i+1]}
+          elseif chr == "R" then
+            switches[4].tags[#switches[4].tags+1] = {x = i+1, y = y, obj = row[i+1]}
+          elseif chr == "1" or chr == "2" or chr == "3" or chr == "4" then
+            switches[chr + 0].pos = {x=i+1, y = y}
           end
         end
       end
@@ -75,6 +91,7 @@ function Loader:load(filename)
   ret.books = books
   ret.brain = brain
   ret.energy = energy
+  ret.switches = switches
   ret.elevators = elevators
 
   return ret

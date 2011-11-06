@@ -14,7 +14,7 @@ function Elevator:new(o)
 end
 
 function Elevator:with(position, direction, width, working, ignore_tile, world)
-  self.body = love.physics.newBody(world.physics, position.x*32, position.y*32, 0, 0)
+  self.body = love.physics.newBody(world.physics, (position.x+1)*32, position.y*32, 0, 0)
   self.width = width
   self.shape = love.physics.newRectangleShape(self.body, -16, -16, 32 * self.width, 32, 0)
   self.shape:setFriction(1.0)
@@ -54,12 +54,14 @@ function Elevator:is_collided(player, world)
   -- check if reached a stop tile
   local x, y = self.body:getPosition()
   if self.direction == "s" then
+    x = x - (32 * self.width) + 33
     y = y - 32
   elseif self.direction == "w" then
+    x = x - (32 * self.width) + 33
   elseif self.direction == "a" then
     x = x - 32
   elseif self.direction == "d" then
-    x = x - (32 * self.width) + 32
+    x = x - (32 * self.width) + 33
   end
 
   local wall = world:find_stop(x, y)

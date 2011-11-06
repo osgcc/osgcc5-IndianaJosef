@@ -4,6 +4,7 @@ require "world"
 require "player"
 require "battery"
 require "book"
+require "switch"
 require "brain"
 require "viewport"
 require "elevator"
@@ -56,6 +57,14 @@ function love.load()
     elevator = load_data.elevators[i]
     elevators[#elevators+1] = Elevator:new():with({x=elevator.x, y=elevator.y}, elevator.direction, elevator.width, true, elevator.ignore_tile, world)
   end
+  
+  switches = {}
+  for i=1,#load_data.switches do
+    switch = load_data.switches[i]
+    if switch.pos then
+      switches[#switches+1] = Switch:new():with({x=switch.pos.x, y=switch.pos.y}, i, switch.tags, world)
+    end
+  end
 
   hud = Hud:new()
 end
@@ -86,6 +95,13 @@ function love.keypressed(key, unicode)
     end
   elseif key == "lshift" or key == "rshift" then
     -- Burn
+    for i=1,#switches do
+      if switches[i]:is_collided_with_player(player) then
+        switches[i]:toggle()
+        return
+      end
+    end
+
     burn_down = 1
   end
 end
@@ -194,6 +210,10 @@ function love.draw()
 
   for i=1,#elevators do
     viewport:draw(elevators[i])
+  end
+
+  for i=1,#switches do
+    viewport:draw(switches[i])
   end
 
   hud:draw(0,600-40, player.energy, player.books, #books, player.brain == 1)
