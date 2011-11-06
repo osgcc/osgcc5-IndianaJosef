@@ -104,9 +104,7 @@ function love.update(dt)
   end
 
   local i = 1
-  str = ""
   while i <= #burned do
-  str = str .. burned[i].time .. ","
     burned[i].time = burned[i].time - (100*dt)
     if burned[i].time <= 0 then
       burned[i].wall.visible = true
@@ -116,7 +114,6 @@ function love.update(dt)
       i = i + 1
     end
   end
-    world:foo(str)
 
   if burn_down == 1 then
     wall = player:burn(world)
