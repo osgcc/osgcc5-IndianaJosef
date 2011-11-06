@@ -52,14 +52,18 @@ function love.keyreleased(key)
 
   if keys_down == 0 then
     state = State.REST
+    player:rest()
+    player:align()
   end
 end
 
 function love.update(dt)
   if state == State.MOVE_LEFT then
-    player:move(-250*dt)
+    player:rest()
+    player:move(-500000*dt)
   elseif state == State.MOVE_RIGHT then
-    player:move(250*dt)
+    player:rest()
+    player:move(500000*dt)
   end
 
   world.physics:update(dt)

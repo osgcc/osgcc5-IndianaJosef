@@ -16,6 +16,7 @@ function Player:with(position, world)
 
   self.body = love.physics.newBody(world.physics, (position.x*32-32)+16, (position.y*32-32)+16, 10, 0)
   self.shape = love.physics.newRectangleShape(self.body, -16, -16, 32, 32, 0)
+  self.shape:setFriction(1.0)
   return self
 end
 
@@ -29,7 +30,19 @@ end
 
 function Player:move(delta)
   local x = self.body:getX()
-  x = x + delta
 
+  self.body:applyForce(delta, 0)
+end
+
+function Player:rest()
+  vx, vy = self.body:getLinearVelocity()
+  self.body:setLinearVelocity(0, vy)
+end
+
+function Player:align()
+  x, y = self.body:getPosition()
+
+  x = math.floor(x+0.5)
+  x = x + (x%4)
   self.body:setX(x)
 end
