@@ -14,6 +14,9 @@ function Loader:load(filename)
   local y = 2
   local start = {x = 1, y = 1}
 
+  local batteries = {}
+  local brain = {x = 1, y = 1}
+
   for line in f:lines() do
     local row = {}
     row[1] = Tile:new():with('.')
@@ -21,8 +24,11 @@ function Loader:load(filename)
     for i=1,#line do
       local chr = line:sub(i,i)
       if chr == "*" then
-        start.x = i+1
-        start.y = y
+        start = {x = i+1, y = y}
+      elseif chr == "+" then
+        batteries[#batteries+1] = {x = i+1, y = y}
+      elseif chr == "~" then
+        brain = {x = i+1, y = y}
       end
       row[i+1] = Tile:new():with(chr)
     end
@@ -43,6 +49,8 @@ function Loader:load(filename)
   ret = {}
   ret.map = map
   ret.start = start
+  ret.batteries = batteries
+  ret.brain = brain
 
   return ret
 end
