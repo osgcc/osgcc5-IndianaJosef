@@ -7,6 +7,8 @@ require "tile"
 
 World = {width = 0, height = 0}
 
+bg_img = love.graphics.newImage("img/bg.png")
+
 function World:new (o)
   o = o or {}
   setmetatable(o, self)
@@ -19,6 +21,8 @@ last_pos = {x=0,y=0}
 last_pos2 = {x=0, y=0}
 
 function World:draw (x,y)
+  love.graphics.draw(bg_img, 0, 0)
+
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]
