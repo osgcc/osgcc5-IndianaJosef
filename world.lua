@@ -36,7 +36,7 @@ function World:with(map)
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]
-      if tile.type == Type.WALL then
+      if tile.tile_type == Type.WALL then
         tile.body = love.physics.newBody(self.physics, lx*32, ly*32, 0, 0)
         tile.shape = love.physics.newRectangleShape(tile.body, -16, -16, 32, 32, 0)
         tile.shape:setFriction(1.0)
