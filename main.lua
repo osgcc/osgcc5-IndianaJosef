@@ -83,6 +83,7 @@ function love.update(dt)
   end
 
   world.physics:update(dt)
+  player:update(dt)
 end
 
 function love.draw()

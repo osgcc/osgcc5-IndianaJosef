@@ -33,18 +33,56 @@ function Player:draw(x, y)
 end
 
 function Player:move(delta)
+  if self.suppress then
+    if delta > 0 and self.suppress > 0 then
+      return
+    elseif delta < 0 and self.suppress < 0 then
+      return
+    end
+  end
+
+  self.suppress = nil
   local x = self.body:getX()
 
   self.body:applyForce(delta, 0)
 end
 
+function Player:suppress_movement(delta, till)
+  if delta == 0 then
+    self.suppress = nil
+  else
+    self.suppress = delta
+    self.suppress_until = till
+  end
+end
+
 function Player:jump()
-  self.body:applyForce(0, -10000)
+  vx, vy = self.body:getLinearVelocity()
+  if vy < 5 then
+    self.suppress = nil
+    self.body:applyForce(0, -10000)
+  end
 end
 
 function Player:rest()
   vx, vy = self.body:getLinearVelocity()
   self.body:setLinearVelocity(0, vy)
+end
+
+function Player:update(dt)
+  if player.suppress then
+  else
+    return
+  end
+
+  local x, y = self.body:getPosition()
+  local dist = (y - self.suppress_until)
+  dist = dist * dist
+  dist = math.sqrt(dist)
+
+  if dist >= 48 then
+    player.suppress = nil
+  end
 end
 
 function Player:align()
