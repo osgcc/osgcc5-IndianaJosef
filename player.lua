@@ -4,6 +4,9 @@
 
 Player = {start = {x=0, y=0}, direction = 1, direction_y = 1, energy = 180, books = 0, brain = 0}
 
+player_r_img = love.graphics.newImage("img/josef.png")
+player_l_img = love.graphics.newImage("img/josef_left.png")
+
 function Player:new(o)
   o = o or {}
   setmetatable(o, self)
@@ -28,11 +31,13 @@ function Player:draw(x, y)
   local r, b = self.body:getPosition()
   local l, t = r-32, b-32
 
-  love.graphics.setColor(0,255,0)
-  love.graphics.rectangle("fill", l-x, t-y, 32, 32)
-  love.graphics.setColor(255,255,255)
-  love.graphics.rectangle("fill", l-x-3, t-y-3, 6, 6)
-  love.graphics.rectangle("fill", r-x-3, b-y-3, 6, 6)
+  local x1,y1,x2,y2 = self.shape:getPoints()
+
+  if player.direction == -1 then
+    love.graphics.draw(player_l_img, x1-x, y1-y)
+  else
+    love.graphics.draw(player_r_img, x1-x, y1-y)
+  end
 end
 
 function Player:move_y(delta, world)
