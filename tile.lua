@@ -32,14 +32,5 @@ function Tile:draw(x,y)
     style = "fill"
   end
 
-  if self.type == Type.START then
-    love.graphics.setColor(0,255,0)
-    style = "fill"
-  end
-
   love.graphics.rectangle(style, x, y, 32, 32)
-
-  if self.type == Type.START then
-    love.graphics.setColor(255,255,255)
-  end
 end
