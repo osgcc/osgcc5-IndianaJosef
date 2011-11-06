@@ -145,9 +145,14 @@ function World:with(map)
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]
-      if tile.tile_type == Type.WALL or tile.tile_type == Type.BREAKABLE then
+      if tile.tile_type ~= Type.EMPTY then
         tile.body = love.physics.newBody(self.physics, lx*32, ly*32, 0, 0)
-        tile.shape = love.physics.newRectangleShape(tile.body, -16, -16, 32, 32, 0)
+        local x, y = -16,-16
+        if tile.tile_type == Type.STAIR_RIGHT then
+          tile.shape = love.physics.newPolygonShape(tile.body, -32, -32, -24, -32, -24, -24, -16, -24, -16, -16, -8, -16, -8, -8, 0, -8, 0, 0, -32, 0)
+        else
+          tile.shape = love.physics.newRectangleShape(tile.body, -16, -16, 32, 32, 0)
+        end
         tile.shape:setFriction(1.0)
         tile.type = "wall"
         tile.shape:setData(tile)
