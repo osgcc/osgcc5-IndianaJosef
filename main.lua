@@ -12,6 +12,8 @@ State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
 keys_down = 0
 burn_down = 0
+jumping = 0
+jumped = 0
 
 function love.load()
   -- Size
@@ -61,11 +63,11 @@ function love.keypressed(key, unicode)
     keys_down = keys_down + 1
   elseif key == "lctrl" or key == "rctrl" then
     -- Jump
-
-    player:jump()
-  elseif key == "lalt" or key == "ralt" or key == "lshift" or key == "rshift" then
+    if jumping == 0 then
+      jumping = 1
+    end
+  elseif key == "lshift" or key == "rshift" then
     -- Burn
-
     burn_down = 1
   end
 end
@@ -76,6 +78,7 @@ function love.keyreleased(key)
   elseif key == "right" then
     keys_down = keys_down - 1
   elseif key == "lctrl" or key == "rctrl" then
+    jumping = -1
   elseif key == "ralt" or key == "lalt" or key == "lshift" or key == "rshift" then
     burn_down = 0
   end
@@ -90,11 +93,11 @@ end
 function love.update(dt)
   if state == State.MOVE_LEFT then
     player:rest()
-    player:move(-500000*dt)
+    player:move(-500*dt, world)
     player.energy = player.energy - 10 * dt
   elseif state == State.MOVE_RIGHT then
     player:rest()
-    player:move(500000*dt)
+    player:move(500*dt, world)
     player.energy = player.energy - 10 * dt
   end
 
@@ -102,8 +105,30 @@ function love.update(dt)
     player:burn(world)
   end
 
+  if jumping == 1 then
+    local old_jumped = jumped
+    jumped = jumped + 500*dt
+    if jumped > (32*4) then
+      player:move_y(old_jumped - (32*4), world)
+      jumped = 32*4
+      jumping = -1
+    end
+    world:foo("J:"..jumped)
+    player:move_y(-500*dt, world)
+  else
+    jumped = jumped - 300*dt
+    if jumped < 0 then
+      jumped = 0
+    end
+
+    world:foo("J"..jumped)
+    if player:move_y(300*dt, world) == true then
+      world:foo("J:BLOCKED"..jumped)
+      jumping = 0
+    end
+  end
+
   world.physics:update(dt)
-  player:update(world, dt)
 end
 
 function love.draw()

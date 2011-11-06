@@ -37,7 +37,7 @@ function World:with(map)
   self.height = #self.map
 
   self.physics = love.physics.newWorld(0,0,self.width*32,self.height*32)
-  self.physics:setGravity(0, 1000)
+  self.physics:setGravity(0, 0)
 
   self.determine = function(a, b)
     local player, battery, wall, book, brain
@@ -64,7 +64,7 @@ function World:with(map)
     elseif b.type == "brain" then
       brain = b
     end
-    
+
     if a.type == "wall" then
       wall = a
     elseif b.type == "wall" then
@@ -102,37 +102,6 @@ function World:with(map)
   end
 
   self.remove = function(a, b, coll)
-    local player, battery, wall, book, brain = self.determine(a,b)
-
-    if player and wall then
-      -- determine if this is a wall blocking left and right velocity... if so, suppress forces!
-      x = wall.body:getX()
-      y = wall.body:getY()
-      px = player.body:getX()
-      py = player.body:getY()
-      dist = math.sqrt((py-y)*(py-y))
-
-      if dist > 32 then
-      else
-        if px > x then
-          player:suppress_movement(-1)
-        else
-          player:suppress_movement(1)
-        end
-      end
-
-      local nx, ny = coll:getNormal()
-      local vx, vy = coll:getVelocity()
-
-      if (y-32) >= (py-1) and ny < 0 and vy > -100 then
-        last_pos = {x = x, y = y}
-        last_pos2 = {x = px, y = py}
-
-        text = "SUPPRESS OFF " .. y .. " >= " .. py
-        player.suppress_jump = nil
-      end
-      text = vy
-    end
   end
 
   self.result = function(a, b, coll)
@@ -153,6 +122,7 @@ function World:with(map)
         else
           tile.shape = love.physics.newRectangleShape(tile.body, -16, -16, 32, 32, 0)
         end
+        tile.shape:setSensor(true)
         tile.shape:setFriction(1.0)
         tile.type = "wall"
         tile.shape:setData(tile)
@@ -171,8 +141,9 @@ function World:find_wall(x, y)
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]
-      if tile.tile_type ~= Type.EMPTY then
+      if tile.tile_type ~= Type.EMPTY and tile.visible then
         if tile.shape:testPoint(x,y) then
+          text = "FOUND " .. tile.body:getX() .. " , " .. tile.body:getY()
           return tile
         end
       end
