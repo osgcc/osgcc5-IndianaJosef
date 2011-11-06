@@ -15,6 +15,8 @@ burn_down = 0
 jumping = 0
 jumped = 0
 
+burned = {}
+
 function love.load()
   -- Size
   love.graphics.setMode(800,600,false,true,0)
@@ -101,9 +103,29 @@ function love.update(dt)
     player.energy = player.energy - 10 * dt
   end
 
-  if burn_down == 1 then
-    player:burn(world)
+  local i = 1
+  str = ""
+  while i <= #burned do
+  str = str .. burned[i].time .. ","
+    burned[i].time = burned[i].time - (100*dt)
+    if burned[i].time <= 0 then
+      burned[i].wall.visible = true
+      burned[i] = burned[#burned]
+      burned[#burned] = nil
+    else
+      i = i + 1
+    end
   end
+    world:foo(str)
+
+  if burn_down == 1 then
+    wall = player:burn(world)
+    if wall then
+      burned[#burned+1] = {wall=wall, time=500}
+    end
+  end
+
+--  world:foo(#burned)
 
   if jumping == 1 then
     local old_jumped = jumped
@@ -113,7 +135,6 @@ function love.update(dt)
       jumped = 32*4
       jumping = -1
     end
-    world:foo("J:"..jumped)
     player:move_y(-500*dt, world)
   else
     jumped = jumped - 300*dt
@@ -121,9 +142,7 @@ function love.update(dt)
       jumped = 0
     end
 
-    world:foo("J"..jumped)
     if player:move_y(300*dt, world) == true then
-      world:foo("J:BLOCKED"..jumped)
       jumping = 0
     end
   end

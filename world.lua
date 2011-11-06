@@ -143,7 +143,6 @@ function World:find_wall(x, y)
       local tile = self.map[ly][lx]
       if tile.tile_type ~= Type.EMPTY and tile.visible then
         if tile.shape:testPoint(x,y) then
-          text = "FOUND " .. tile.body:getX() .. " , " .. tile.body:getY()
           return tile
         end
       end

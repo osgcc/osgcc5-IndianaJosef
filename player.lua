@@ -44,7 +44,6 @@ function Player:move_y(delta, world)
     self.direction_y = -1
   end
 
-  world:foo("IS_COLLIDED?!?"..os.clock().." : "..delta.. " : ".. y+delta)
   self.body:setY(y + delta)
   wall = self:is_collided_y(y+delta,world)
   if wall then
@@ -168,6 +167,8 @@ function Player:burn(world)
   if wall_break and wall_break.tile_type == Type.BREAKABLE then
     wall_break.visible = false
   end
+  
+  return wall_break
 end
 
 function Player:avoid(wall)
