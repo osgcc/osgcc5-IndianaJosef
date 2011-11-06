@@ -44,9 +44,17 @@ function Player:rest()
 end
 
 function Player:align()
-  x, y = self.body:getPosition()
+  local x, y = self.body:getPosition()
 
   x = math.floor(x+0.5)
-  x = x + (x%4)
+
+  local diff = x % 4
+
+  if diff < 2 then
+    x = x - diff
+  else
+    x = x + (4-diff)
+  end
+
   self.body:setX(x)
 end
