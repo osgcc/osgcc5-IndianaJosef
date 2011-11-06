@@ -36,7 +36,7 @@ function World:with(map)
   self.physics:setGravity(0, 1000)
 
   self.add = function(a, b, coll)
-    local player, battery, wall
+    local player, battery, wall, book, brain
     if a.type == "player" then
       player = a
     elseif b.type == "player" then
@@ -48,6 +48,18 @@ function World:with(map)
     elseif b.type == "battery" then
       battery = b
     end
+
+    if a.type == "book" then
+      book = a
+    elseif b.type == "book" then
+      book = b
+    end
+
+    if a.type == "brain" then
+      brain = a
+    elseif b.type == "brain" then
+      brain = b
+    end
     
     if a.type == "wall" then
       wall = a
@@ -58,6 +70,20 @@ function World:with(map)
     if battery and player then
       if battery.visible == true then
         battery.visible = false
+        text = "bar"
+      end
+    end
+
+    if book and player then
+      if book.visible == true then
+        book.visible = false
+        text = "bar"
+      end
+    end
+
+    if brain and player then
+      if brain.visible == true then
+        brain.visible = false
         text = "bar"
       end
     end

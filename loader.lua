@@ -15,6 +15,7 @@ function Loader:load(filename)
   local start = {x = 1, y = 1}
 
   local batteries = {}
+  local books = {}
   local brain = {x = 1, y = 1}
 
   for line in f:lines() do
@@ -27,6 +28,8 @@ function Loader:load(filename)
         start = {x = i+1, y = y}
       elseif chr == "+" then
         batteries[#batteries+1] = {x = i+1, y = y}
+      elseif chr == "%" then
+        books[#books+1] = {x = i+1, y = y}
       elseif chr == "~" then
         brain = {x = i+1, y = y}
       end
@@ -50,6 +53,7 @@ function Loader:load(filename)
   ret.map = map
   ret.start = start
   ret.batteries = batteries
+  ret.books = books
   ret.brain = brain
 
   return ret

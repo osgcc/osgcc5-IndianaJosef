@@ -3,6 +3,8 @@ require "loader"
 require "world"
 require "player"
 require "battery"
+require "book"
+require "brain"
 require "viewport"
 
 -- Load Initial World
@@ -19,6 +21,13 @@ batteries = {}
 for i=1,#load_data.batteries do
   batteries[#batteries+1] = Battery:new():with(load_data.batteries[i], world)
 end
+
+books = {}
+for i=1,#load_data.books do
+  books[#books+1] = Book:new():with(load_data.books[i], world)
+end
+
+brain = Brain:new():with(load_data.brain, world)
 
 viewport = Viewport:new()
 
@@ -84,4 +93,8 @@ function love.draw()
   for i=1,#batteries do
     viewport:draw(batteries[i])
   end
+  for i=1,#books do
+    viewport:draw(books[i])
+  end
+  viewport:draw(brain)
 end
