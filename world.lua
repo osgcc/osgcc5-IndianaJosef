@@ -20,9 +20,11 @@ text = "foo"
 last_pos = {x=0,y=0}
 last_pos2 = {x=0, y=0}
 
-function World:draw (x,y)
-  love.graphics.draw(bg_img, 0, 0)
+function World:drawBackground(x,y)
+  love.graphics.draw(bg_img, x, y)
+end
 
+function World:draw (x,y)
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]

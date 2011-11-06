@@ -165,6 +165,7 @@ end
 function love.draw()
 	love.graphics.setBackgroundColor(0,0,0)
 
+  viewport:drawBackground(world)
   viewport:draw(world)
   viewport:draw(player)
   for i=1,#batteries do
@@ -174,7 +175,7 @@ function love.draw()
     viewport:draw(books[i])
   end
   viewport:draw(brain)
-  
+
   for i=1,#elevators do
     viewport:draw(elevators[i])
   end

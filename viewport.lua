@@ -41,6 +41,16 @@ function Viewport:center(x, y)
   end
 end
 
+function Viewport:drawBackground(world)
+  local ratio_x = self.x / (self.world_width - self.width)
+  local ratio_y = self.y / (self.world_height - self.height)
+
+  local bg_x = ratio_x * (bg_img:getWidth() - self.width)
+  local bg_y = ratio_y * (bg_img:getHeight() - self.height)
+
+  world:drawBackground(-bg_x, -bg_y)
+end
+
 function Viewport:draw(obj)
   obj:draw(self.x, self.y)
 end
