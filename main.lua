@@ -13,6 +13,8 @@ JUMP_MAX = 32*3
 PLAYER_SPEED = 300
 ELEVATOR_SPEED = 100
 
+go = false
+
 State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
 keys_down = 0
@@ -25,9 +27,10 @@ burned = {}
 function love.load()
   -- Size
   love.graphics.setMode(800,600,false,true,0)
+  love.graphics.setCaption("Foo")
 
   -- Load Initial World
-  local load_data = Loader:load("world_2")
+  local load_data = Loader:load("world_3")
 
   world = World:new():with(load_data.map)
   player = Player:new():with(load_data.start, world)
@@ -60,6 +63,10 @@ end
 -- Events
 
 function love.keypressed(key, unicode)
+  if go == false then
+    return
+  end
+
   if key == "q" then
     love.event.push("q")
   elseif key == "left" then
@@ -84,6 +91,11 @@ function love.keypressed(key, unicode)
 end
 
 function love.keyreleased(key)
+  if go == false then
+    go = true
+    return
+  end
+
   if key == "left" then
     keys_down = keys_down - 1
   elseif key == "right" then
@@ -102,15 +114,19 @@ function love.keyreleased(key)
 end
 
 function love.update(dt)
+  if go == false then
+    dt = 0
+  end
+
   if state == State.MOVE_LEFT then
     player:rest()
     player:move(-PLAYER_SPEED*dt, world)
-    player.energy = player.energy - 10 * dt
+    player.energy = player.energy - 5 * dt
     viewport:center(player:getX(), player:getY())
   elseif state == State.MOVE_RIGHT then
     player:rest()
     player:move(PLAYER_SPEED*dt, world)
-    player.energy = player.energy - 10 * dt
+    player.energy = player.energy - 5 * dt
     viewport:center(player:getX(), player:getY())
   end
 

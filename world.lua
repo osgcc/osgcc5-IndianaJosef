@@ -16,7 +16,7 @@ function World:new (o)
   return o
 end
 
-text = "foo"
+text = ""
 last_pos = {x=0,y=0}
 last_pos2 = {x=0, y=0}
 
@@ -85,7 +85,7 @@ function World:with(map)
     if battery and player then
       if battery.visible == true then
         battery.visible = false
-        player.energy = player.energy + 20
+        player.energy = player.energy + 25
       end
     end
 
