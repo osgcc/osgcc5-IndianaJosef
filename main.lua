@@ -84,9 +84,11 @@ function love.update(dt)
   if state == State.MOVE_LEFT then
     player:rest()
     player:move(-500000*dt)
+    player.energy = player.energy - 10 * dt
   elseif state == State.MOVE_RIGHT then
     player:rest()
     player:move(500000*dt)
+    player.energy = player.energy - 10 * dt
   end
 
   world.physics:update(dt)
