@@ -39,6 +39,8 @@ function love.keypressed(key, unicode)
     keys_down = keys_down + 1
   elseif key == "lctrl" or key == "rctrl" then
     -- Jump
+
+    player:jump()
   end
 end
 

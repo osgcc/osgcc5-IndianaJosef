@@ -34,6 +34,10 @@ function Player:move(delta)
   self.body:applyForce(delta, 0)
 end
 
+function Player:jump()
+  self.body:applyForce(0, -10000)
+end
+
 function Player:rest()
   vx, vy = self.body:getLinearVelocity()
   self.body:setLinearVelocity(0, vy)
