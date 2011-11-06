@@ -73,6 +73,15 @@ end
 
 function Elevator:is_collided_with_player(player, world)
   local r = player:getX()
+  local b = player:getY() - 1
+  local l = r - 32
+  local t = b - 31
+
+  return self.shape:testPoint(r,b) or self.shape:testPoint(r,t) or self.shape:testPoint(l,b) or self.shape:testPoint(l,t)
+end
+
+function Elevator:is_collided_with_player_y(player, world)
+  local r = player:getX()
   local b = player:getY()
   local l = r - 32
   local t = b - 32

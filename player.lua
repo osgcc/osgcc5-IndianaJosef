@@ -134,7 +134,7 @@ function Player:is_collided_y(y,world)
   for i=1,#elevators do
     elevator = elevators[i]
 
-    if elevator:is_collided_with_player(player, world) then
+    if elevator:is_collided_with_player_y(player, world) then
       return elevator
     end
   end
