@@ -12,8 +12,8 @@ function Viewport:new(o)
 end
 
 function Viewport:with(world_width, world_height, width, height)
-  self.world_width = width
-  self.world_height = height
+  self.world_width = world_width
+  self.world_height = world_height
   self.width = width
   self.height = height
 
@@ -30,6 +30,14 @@ function Viewport:center(x, y)
 
   if self.y < 0 then
     self.y = 0
+  end
+
+  if self.x + self.width > self.world_width then
+    self.x = self.world_width - self.width
+  end
+
+  if self.y + self.height > self.world_height then
+    self.y = self.world_height - self.height
   end
 end
 
