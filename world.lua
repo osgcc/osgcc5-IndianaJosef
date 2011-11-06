@@ -89,7 +89,7 @@ function World:with(map)
     end
     
     if player and wall then
-      -- determine if this is a wall blocking left and right velocity... if so, drop
+      -- determine if this is a wall blocking left and right velocity... if so, suppress forces!
     end
   end
 
