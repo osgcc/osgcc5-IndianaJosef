@@ -10,7 +10,7 @@ wall_img = love.graphics.newImage("img/wall.png")
 breakable_img = love.graphics.newImage("img/breakable.png")
 stair_left_img = love.graphics.newImage("img/stair_left.png")
 stair_right_img = love.graphics.newImage("img/stair_right.png")
-deadly_imgs = {lava = love.graphics.newImage("img/lava.png")}
+deadly_imgs = {lava = love.graphics.newImage("img/lava.png"), spikes = love.graphics.newImage("img/spikes.png")}
 
 function Tile:new (o)
   o = o or {}
@@ -42,6 +42,9 @@ function Tile:with(type)
   elseif type == "~" then
     self.tile_type = Type.DEADLY
     self.deadly_type = "lava"
+  elseif type == "W" then
+    self.tile_type = Type.DEADLY
+    self.deadly_type = "spikes"
   else
     self.tile_type = Type.EMPTY
   end

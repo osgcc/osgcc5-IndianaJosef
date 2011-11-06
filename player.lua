@@ -36,7 +36,7 @@ function Player:draw(x, y)
 end
 
 function Player:move_y(delta, world)
-  local y = self.body:getY()
+  local x,y = self.body:getPosition()
 
   if delta > 0 then
     self.direction_y = 1
@@ -47,7 +47,10 @@ function Player:move_y(delta, world)
   self.body:setY(y + delta)
   wall = self:is_collided_y(y+delta,world)
   if wall then
-    self:check_wall(wall)
+    if world:find_deadly(x-32,x,y+delta) then
+      -- DEATH
+      self.energy = 0
+    end
     self:avoid_y(wall)
     return true
   end
@@ -65,7 +68,6 @@ function Player:move(delta, world)
   self.body:setX(x + delta)
   wall = self:is_collided(x+delta,world)
   if wall then
-    self:check_wall(wall)
     self:avoid(wall)
     return true
   end
@@ -217,12 +219,6 @@ function Player:avoid_y(wall)
     else
       self.body:setY(wb+32)
     end
-  end
-end
-
-function Player:check_wall(wall)
-  if wall.tile_type == Type.DEADLY then
-    self.energy = 0
   end
 end
 

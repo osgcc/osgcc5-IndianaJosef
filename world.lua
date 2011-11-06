@@ -162,3 +162,27 @@ function World:find_wall(x, y)
     end
   end
 end
+
+function World:find_deadly(l, r, y)
+  local left = false
+  local right = false
+
+  for lx=1,self.width do
+    for ly = 1,self.height do
+      local tile = self.map[ly][lx]
+      if tile.tile_type ~= Type.EMPTY and tile.visible then
+        if tile.shape:testPoint(l,y) and tile.tile_type == Type.DEADLY then
+          left = true
+        end
+        if tile.shape:testPoint(r,y) and tile.tile_type == Type.DEADLY then
+          right = true
+        end
+        if left and right then
+          return true
+        end
+      end
+    end
+  end
+
+  return left and right
+end
