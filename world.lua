@@ -18,13 +18,8 @@ function World:draw (x,y)
   for lx=1,self.width do
     for ly = 1,self.height do
       local style = "line"
-      debug.debug()
-
-      if self.map[ly][lx].type == "." then
-        style = "fill"
-      end
-
-      love.graphics.rectangle(style, x+lx*32-32, y+ly*32-32, 32, 32)
+      
+      self.map[ly][lx]:draw(x+lx*32-32, y+ly*32-32)
     end
   end
 end
