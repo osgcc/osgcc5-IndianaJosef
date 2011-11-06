@@ -17,7 +17,7 @@ function love.load()
   love.graphics.setMode(800,600,false,true,0)
 
   -- Load Initial World
-  local load_data = Loader:load("world_1")
+  local load_data = Loader:load("world_2")
   
   world = World:new():with(load_data.map)
   player = Player:new():with(load_data.start, world)

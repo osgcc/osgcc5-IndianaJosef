@@ -15,6 +15,8 @@ function World:new (o)
 end
 
 text = "foo"
+last_pos = {x=0,y=0}
+last_pos2 = {x=0, y=0}
 
 function World:draw (x,y)
   for lx=1,self.width do
@@ -25,6 +27,8 @@ function World:draw (x,y)
   end
 
   love.graphics.print(text, 300, 300)
+  love.graphics.rectangle("fill", last_pos.x-x-3,last_pos.y-y-3,6,6)
+  love.graphics.rectangle("fill", last_pos2.x-x-3,last_pos2.y-y-3,6,6)
 end
 
 function World:with(map)
@@ -116,6 +120,18 @@ function World:with(map)
           player:suppress_movement(1)
         end
       end
+
+      local nx, ny = coll:getNormal()
+      local vx, vy = coll:getVelocity()
+
+      if (y-32) >= (py-1) and ny < 0 and vy > -100 then
+        last_pos = {x = x, y = y}
+        last_pos2 = {x = px, y = py}
+
+        text = "SUPPRESS OFF " .. y .. " >= " .. py
+        player.suppress_jump = nil
+      end
+      text = vy
     end
   end
 
@@ -140,6 +156,10 @@ function World:with(map)
   end
 
   return self
+end
+
+function World:foo(bar)
+  text = bar
 end
 
 function World:find_wall(x, y)

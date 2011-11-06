@@ -58,8 +58,8 @@ function Player:suppress_movement(delta)
 end
 
 function Player:jump()
-  local vx, vy = self.body:getLinearVelocity()
-  if vy < 100 then
+  if self.suppress_jump == nil then
+    self.suppress_jump = 1
     self.suppress = nil
 
     -- Look for a wall to the immediate left or right and suppress movement if there is one
@@ -76,6 +76,8 @@ function Player:jump()
         self.suppress = -1
       end
     end
+    
+    world:foo("SUPPRESS")
 
     self.body:applyForce(0, -10000)
   end

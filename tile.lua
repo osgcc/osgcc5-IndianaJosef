@@ -6,6 +6,8 @@ Type = {WALL = 0, EMPTY = 1, START = 2}
 
 Tile = {tile_type = 0, action = 0}
 
+wall_img = love.graphics.newImage("img/wall.png")
+
 function Tile:new (o)
   o = o or {}
   setmetatable(o, self)
@@ -33,6 +35,7 @@ function Tile:draw(x,y)
   end
 
   if self.tile_type == Type.WALL then
-    love.graphics.rectangle(style, x, y, 32, 32)
+--    love.graphics.rectangle(style, x, y, 32, 32)
+    love.graphics.draw(wall_img, x, y)
   end
 end
