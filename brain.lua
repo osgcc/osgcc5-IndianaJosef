@@ -31,7 +31,5 @@ function Brain:draw(x, y)
 
   local x1,y1,x2,y2 = self.shape:getPoints()
 
-  love.graphics.setColor(255,0,255)
   love.graphics.draw(brain_img, x1-x, y1-y)
-  love.graphics.setColor(255,255,255)
 end
