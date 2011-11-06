@@ -32,14 +32,21 @@ function Player:draw(x, y)
   love.graphics.setColor(255,255,255)
 
   local x2, y2 = self.body:getPosition()
+  local vx, vy = self.body:getLinearVelocity()
+  if vy >= 0 then
+    y2 = y2 - 32
+  end
   love.graphics.rectangle("fill", x2-x-3, y2-y-3, 6, 6)
+  love.graphics.rectangle("fill", x2-x-32-3, y2-y-3, 6, 6)
 end
 
 function Player:move(delta)
   if self.suppress then
-    if delta > 0 and self.suppress > 0 then
+    if self.suppress == 2 then
       return
-    elseif delta < 0 and self.suppress < 0 then
+    elseif delta > 0 and self.suppress == 1 then
+      return
+    elseif delta < 0 and self.suppress == -1 then
       return
     end
   end
@@ -50,20 +57,34 @@ function Player:move(delta)
   self.body:applyForce(delta, 0)
 end
 
-function Player:suppress_movement(delta, till)
+function Player:suppress_movement(delta)
   if delta == 0 then
     self.suppress = nil
   else
     self.suppress = delta
-    self.suppress_until = till
   end
 end
 
 function Player:jump()
   local vx, vy = self.body:getLinearVelocity()
   if vy < 5 then
-    -- Look for a wall to the immediate left or right and suppress movement if there is one
     self.suppress = nil
+
+    -- Look for a wall to the immediate left or right and suppress movement if there is one
+    local x, y = self.body:getPosition()
+
+    if world:find_wall(x+1,y) or world:find_wall(x+1,y-32) then
+      self.suppress = 1
+    end
+
+    if world:find_wall(x-33,y) or world:find_wall(x-33,y-32) then
+      if self.suppress == 1 then
+        self.suppress = 2
+      else
+        self.suppress = -1
+      end
+    end
+
     self.body:applyForce(0, -10000)
   end
 end
@@ -79,20 +100,25 @@ function Player:update(world,dt)
     return
   end
 
-  local vx, vy = self.body:getLinearVelocity()
-
   local x, y = self.body:getPosition()
-  if vy >= 0 then
-    y = y - 32
+
+  if player.suppress == 1 or player.suppress == 2 then
+    if world:find_wall(x+1,y) == nil and world:find_wall(x+1,y-32) == nil then
+      if player.suppress == 2 then
+        player.suppress = -1
+      else
+        player.suppress = nil
+      end
+    end
   end
 
-  if player.suppress > 0 then
-    if world:find_wall(x+1,y) == nil then
-      player.suppress = nil
-    end
-  else
-    if world:find_wall(x-33,y) == nil then
-      player.suppress = nil
+  if player.suppress == -1 or player.suppress == 2 then
+    if world:find_wall(x-33,y) == nil and world:find_wall(x-33,y-32) == nil then
+      if player.suppress == 2 then
+        player.suppress = 1
+      else
+        player.suppress = nil
+      end
     end
   end
 end

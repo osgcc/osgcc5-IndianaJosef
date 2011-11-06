@@ -107,15 +107,13 @@ function World:with(map)
       px = player.body:getX()
       py = player.body:getY()
       dist = math.sqrt((py-y)*(py-y))
-      if dist > 31 then
-        text = "foo"
+      text = dist
+      if dist > 32 then
       else
         if px > x then
-          player:suppress_movement(-1, y+16)
---          text = "No Move Left"
+          player:suppress_movement(-1)
         else
-          player:suppress_movement(1, y+16)
-  --        text = "No Move Right"
+          player:suppress_movement(1)
         end
       end
     end
