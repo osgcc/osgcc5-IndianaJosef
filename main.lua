@@ -8,6 +8,9 @@ require "brain"
 require "viewport"
 require "hud"
 
+JUMP_MAX = 32*3
+PLAYER_SPEED = 300
+
 State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
 keys_down = 0
@@ -95,11 +98,11 @@ end
 function love.update(dt)
   if state == State.MOVE_LEFT then
     player:rest()
-    player:move(-500*dt, world)
+    player:move(-PLAYER_SPEED*dt, world)
     player.energy = player.energy - 10 * dt
   elseif state == State.MOVE_RIGHT then
     player:rest()
-    player:move(500*dt, world)
+    player:move(PLAYER_SPEED*dt, world)
     player.energy = player.energy - 10 * dt
   end
 
@@ -127,19 +130,19 @@ function love.update(dt)
   if jumping == 1 then
     local old_jumped = jumped
     jumped = jumped + 500*dt
-    if jumped > (32*4) then
-      player:move_y(old_jumped - (32*4), world)
-      jumped = 32*4
+    if jumped > JUMP_MAX then
+      player:move_y(old_jumped - JUMP_MAX, world)
+      jumped = JUMP_MAX
       jumping = -1
     end
     player:move_y(-500*dt, world)
   else
-    jumped = jumped - 300*dt
+    jumped = jumped - PLAYER_SPEED*dt
     if jumped < 0 then
       jumped = 0
     end
 
-    if player:move_y(300*dt, world) == true then
+    if player:move_y(PLAYER_SPEED*dt, world) == true then
       jumping = 0
     end
   end
