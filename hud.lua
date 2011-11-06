@@ -42,17 +42,19 @@ function Hud:draw(x, y, energy, knowledge, kmax, brain)
     kstr = "0" .. knowledge
   end
 
+  love.graphics.draw(battery_img, x+10, y+15)
   love.graphics.print("Energy: " .. estr, x+40, y+15)
+  love.graphics.draw(book_img, x+130, y+6)
   love.graphics.print("Knowledge: " .. kstr .. "/" .. kmaxstr, x+170, y+15)
 
   if energy <= 0 then
-    love.graphics.print("You LOSE!", x+350, y+15)
+    love.graphics.print("You LOSE!", x+800-40-35, y+15)
   elseif brain and knowledge == kmax then
-    love.graphics.print("You WIN!", x+350, y+15)
+    love.graphics.print("You WIN!", x+800-40-35, y+15)
   elseif brain then
-    love.graphics.print("Found the BRAIN!", x+350, y+15)
+    love.graphics.print("Found the BRAIN!", x+800-100-35, y+15)
   else
-    love.graphics.print("Find: ", x+350, y+15)
-    love.graphics.print("BRAIN", x+385, y+15)
+    love.graphics.print("Find: ", x+800-40-35, y+15)
+    love.graphics.draw(brain_img, 800-40, y+6)
   end
 end
