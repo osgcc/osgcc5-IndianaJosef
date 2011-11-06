@@ -30,6 +30,9 @@ function Player:draw(x, y)
   love.graphics.setColor(0,255,0)
   love.graphics.rectangle("fill", x1-x, y1-y, 32, 32)
   love.graphics.setColor(255,255,255)
+
+  local x2, y2 = self.body:getPosition()
+  love.graphics.rectangle("fill", x2-x-3, y2-y-3, 6, 6)
 end
 
 function Player:move(delta)
@@ -57,7 +60,7 @@ function Player:suppress_movement(delta, till)
 end
 
 function Player:jump()
-  vx, vy = self.body:getLinearVelocity()
+  local vx, vy = self.body:getLinearVelocity()
   if vy < 5 then
     -- Look for a wall to the immediate left or right and suppress movement if there is one
     self.suppress = nil
@@ -66,23 +69,31 @@ function Player:jump()
 end
 
 function Player:rest()
-  vx, vy = self.body:getLinearVelocity()
+  local vx, vy = self.body:getLinearVelocity()
   self.body:setLinearVelocity(0, vy)
 end
 
-function Player:update(dt)
+function Player:update(world,dt)
   if player.suppress then
   else
     return
   end
 
-  local x, y = self.body:getPosition()
-  local dist = (y - self.suppress_until)
-  dist = dist * dist
-  dist = math.sqrt(dist)
+  local vx, vy = self.body:getLinearVelocity()
 
-  if dist >= 48 then
-    player.suppress = nil
+  local x, y = self.body:getPosition()
+  if vy >= 0 then
+    y = y - 32
+  end
+
+  if player.suppress > 0 then
+    if world:find_wall(x+1,y) == nil then
+      player.suppress = nil
+    end
+  else
+    if world:find_wall(x-33,y) == nil then
+      player.suppress = nil
+    end
   end
 end
 

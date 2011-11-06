@@ -112,10 +112,10 @@ function World:with(map)
       else
         if px > x then
           player:suppress_movement(-1, y+16)
-          text = "No Move Left"
+--          text = "No Move Left"
         else
           player:suppress_movement(1, y+16)
-          text = "No Move Right"
+  --        text = "No Move Right"
         end
       end
     end
@@ -142,4 +142,18 @@ function World:with(map)
   end
 
   return self
+end
+
+function World:find_wall(x, y)
+  for lx=1,self.width do
+    for ly = 1,self.height do
+      local tile = self.map[ly][lx]
+      if tile.tile_type == Type.WALL then
+        if tile.shape:testPoint(x,y) then
+          text = "found"
+          return tile
+        end
+      end
+    end
+  end
 end
