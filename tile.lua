@@ -4,7 +4,7 @@
 
 Type = {WALL = 0, EMPTY = 1, START = 2, BREAKABLE = 3, STAIR_LEFT = 4, STAIR_RIGHT = 5}
 
-Tile = {tile_type = 0, action = 0}
+Tile = {tile_type = 0, action = 0, visible = true}
 
 wall_img = love.graphics.newImage("img/wall.png")
 breakable_img = love.graphics.newImage("img/breakable.png")
@@ -43,7 +43,9 @@ function Tile:with(type)
 end
 
 function Tile:draw(x,y)
-  local style = "line"
+  if self.visible == false then
+    return
+  end
 
   if self.tile_type == Type.WALL then
     love.graphics.draw(wall_img, x, y)

@@ -2,7 +2,7 @@
 
 -- Represents the player
 
-Player = {start = {x=0, y=0}, energy = 180, books = 0, brain = 0}
+Player = {start = {x=0, y=0}, direction = 1, energy = 180, books = 0, brain = 0}
 
 function Player:new(o)
   o = o or {}
@@ -45,6 +45,12 @@ function Player:move(delta)
 
   self.suppress = nil
   local x = self.body:getX()
+
+  if delta > 0 then
+    self.direction = 1
+  else
+    self.direction = -1
+  end
 
   self.body:applyForce(delta, 0)
 end
@@ -131,4 +137,20 @@ function Player:align()
   end
 
   self.body:setX(x)
+end
+
+function Player:burn(world)
+  local x, y = self.body:getPosition()
+
+  if self.direction < 0 then
+    x = x - 32
+  end
+
+  local wall = world:find_wall(x, y+1)
+
+  if wall and wall.tile_type == Type.BREAKABLE then
+    wall.visible = false
+    wall.shape:setSensor(true)
+    self.body:applyForce(0, 50)
+  end
 end

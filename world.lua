@@ -171,7 +171,7 @@ function World:find_wall(x, y)
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]
-      if tile.tile_type == Type.WALL then
+      if tile.tile_type ~= Type.EMPTY then
         if tile.shape:testPoint(x,y) then
           return tile
         end

@@ -11,6 +11,7 @@ require "hud"
 State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
 keys_down = 0
+burn_down = 0
 
 function love.load()
   -- Size
@@ -62,6 +63,10 @@ function love.keypressed(key, unicode)
     -- Jump
 
     player:jump()
+  elseif key == "lalt" or key == "ralt" or key == "lshift" or key == "rshift" then
+    -- Burn
+
+    burn_down = 1
   end
 end
 
@@ -71,6 +76,8 @@ function love.keyreleased(key)
   elseif key == "right" then
     keys_down = keys_down - 1
   elseif key == "lctrl" or key == "rctrl" then
+  elseif key == "ralt" or key == "lalt" or key == "lshift" or key == "rshift" then
+    burn_down = 0
   end
 
   if keys_down == 0 then
@@ -89,6 +96,10 @@ function love.update(dt)
     player:rest()
     player:move(500000*dt)
     player.energy = player.energy - 10 * dt
+  end
+
+  if burn_down == 1 then
+    player:burn(world)
   end
 
   world.physics:update(dt)
