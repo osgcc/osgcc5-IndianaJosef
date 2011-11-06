@@ -40,6 +40,14 @@ function Elevator:move(delta, player, world)
     self.body:setX(x + delta)
   end
   self:is_collided(player, world)
+
+  if self:is_collided_with_player_y(player, world) then
+    if self.direction == "a" then
+      player:move(-delta, world)
+    elseif self.direction == "d" then
+      player:move(delta, world)
+    end
+  end
 end
 
 function Elevator:is_collided(player, world)

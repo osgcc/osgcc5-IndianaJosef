@@ -53,8 +53,6 @@ function love.load()
     elevator = load_data.elevators[i]
     elevators[#elevators+1] = Elevator:new():with({x=elevator.x, y=elevator.y}, elevator.direction, elevator.width, true, elevator.ignore_tile, world)
   end
-  
-  world:foo(#elevators)
 
   hud = Hud:new()
 end
