@@ -4,7 +4,7 @@
 
 Elevator = {visible = true, working = true, width = 1, direction = "w", ignore_tile}
 
-elevator_block_img = love.graphics.newImage("img/wall.png")
+elevator_block_img = love.graphics.newImage("img/elevator.png")
 
 function Elevator:new(o)
   o = o or {}
