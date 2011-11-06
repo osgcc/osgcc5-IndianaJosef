@@ -28,6 +28,12 @@ function World:with(map)
   self.map = map
   self.width = #self.map[1]
   self.height = #self.map
+
+  self.physics = love.physics.newWorld(0,0,self.width*32,self.height*32)
+  self.physics:setGravity(0, 250)
+  self.physics:setMeter(32)
   
+  -- Set up rigid bodies
+
   return self
 end
