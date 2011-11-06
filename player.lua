@@ -94,6 +94,14 @@ function Player:is_collided(x, world)
       return wall
     end
   end
+
+  for i=1,#elevators do
+    elevator = elevators[i]
+
+    if elevator:is_collided_with_player(player, world) then
+      return elevator
+    end
+  end
 end
 
 function Player:is_collided_y(y,world)
@@ -120,6 +128,14 @@ function Player:is_collided_y(y,world)
     wall = world:find_wall(x-31,y-33)
     if wall then
       return wall
+    end
+  end
+
+  for i=1,#elevators do
+    elevator = elevators[i]
+
+    if elevator:is_collided_with_player(player, world) then
+      return elevator
     end
   end
 end
@@ -175,7 +191,7 @@ function Player:avoid(wall)
   local r, b = self.body:getPosition()
   local l, t = r - 32, b - 32
   local wr, wb = wall.body:getPosition()
-  local wl, wt = wr - 32, wb - 32
+  local wl, wt = wr - (wall.width * 32), wb - 32
 
   if (l > wl and l < wr) or (r > wl and r < wr) then
     if self.direction == 1 then
@@ -190,7 +206,7 @@ function Player:avoid_y(wall)
   local r, b = self.body:getPosition()
   local l, t = r - 32, b - 32
   local wr, wb = wall.body:getPosition()
-  local wl, wt = wr - 32, wb - 32
+  local wl, wt = wr - (wall.width * 32), wb - 32
 
   if (t > wt and t < wb) or (b > wt and b < wb) then
     if self.direction_y == 1 then

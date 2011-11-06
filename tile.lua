@@ -4,7 +4,7 @@
 
 Type = {WALL = 0, EMPTY = 1, START = 2, BREAKABLE = 3, STAIR_LEFT = 4, STAIR_RIGHT = 5}
 
-Tile = {tile_type = 0, action = 0, visible = true}
+Tile = {tile_type = 0, action = 0, visible = true, stop = false, width = 1}
 
 wall_img = love.graphics.newImage("img/wall.png")
 breakable_img = love.graphics.newImage("img/breakable.png")
@@ -19,6 +19,7 @@ function Tile:new (o)
 end
 
 function Tile:with(type)
+  self.tile_type = Type.EMPTY
   if type == "." then
     self.tile_type = Type.WALL
   elseif type == "," then
@@ -27,14 +28,16 @@ function Tile:with(type)
     self.tile_type = Type.STAIR_LEFT
   elseif type == "\\" then
     self.tile_type = Type.STAIR_RIGHT
-  elseif type == "*" then
-    self.tile_type = Type.EMPTY
-  elseif type == "%" then
-    self.tile_type = Type.EMPTY
-  elseif type == "+" then
-    self.tile_type = Type.EMPTY
-  elseif type == "~" then
-    self.tile_type = Type.EMPTY
+  elseif type == "|" then
+    self.stop = true
+  elseif type == "w" then
+    self.stop = true
+  elseif type == "a" then
+    self.stop = true
+  elseif type == "s" then
+    self.stop = true
+  elseif type == "d" then
+    self.stop = true
   else
     self.tile_type = Type.EMPTY
   end

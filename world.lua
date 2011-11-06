@@ -114,7 +114,7 @@ function World:with(map)
   for lx=1,self.width do
     for ly = 1,self.height do
       local tile = self.map[ly][lx]
-      if tile.tile_type ~= Type.EMPTY then
+      if tile.tile_type ~= Type.EMPTY or tile.stop then
         tile.body = love.physics.newBody(self.physics, lx*32, ly*32, 0, 0)
         local x, y = -16,-16
         if tile.tile_type == Type.STAIR_RIGHT then
@@ -135,6 +135,19 @@ end
 
 function World:foo(bar)
   text = bar
+end
+
+function World:find_stop(x, y)
+  for lx=1,self.width do
+    for ly = 1,self.height do
+      local tile = self.map[ly][lx]
+      if tile.stop and tile.visible then
+        if tile.shape:testPoint(x,y) then
+          return tile
+        end
+      end
+    end
+  end
 end
 
 function World:find_wall(x, y)

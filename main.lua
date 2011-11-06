@@ -6,10 +6,12 @@ require "battery"
 require "book"
 require "brain"
 require "viewport"
+require "elevator"
 require "hud"
 
 JUMP_MAX = 32*3
 PLAYER_SPEED = 300
+ELEVATOR_SPEED = 100
 
 State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
@@ -45,6 +47,14 @@ function love.load()
   viewport:center(player:getX(), player:getY())
 
   player.energy = load_data.energy
+
+  elevators = {}
+  for i=1,#load_data.elevators do
+    elevator = load_data.elevators[i]
+    elevators[#elevators+1] = Elevator:new():with({x=elevator.x, y=elevator.y}, elevator.direction, elevator.width, true, elevator.ignore_tile, world)
+  end
+  
+  world:foo(#elevators)
 
   hud = Hud:new()
 end
@@ -106,6 +116,10 @@ function love.update(dt)
     viewport:center(player:getX(), player:getY())
   end
 
+  for i=1,#elevators do
+    elevators[i]:move(ELEVATOR_SPEED*dt, player, world)
+  end
+
   local i = 1
   while i <= #burned do
     burned[i].time = burned[i].time - (100*dt)
@@ -125,8 +139,6 @@ function love.update(dt)
     end
   end
 
---  world:foo(#burned)
-
   if jumping == 1 then
     local old_jumped = jumped
     jumped = jumped + 500*dt
@@ -136,6 +148,7 @@ function love.update(dt)
       jumping = -1
     end
     player:move_y(-500*dt, world)
+    viewport:center(player:getX(), player:getY())
   else
     jumped = jumped - PLAYER_SPEED*dt
     if jumped < 0 then
@@ -145,6 +158,7 @@ function love.update(dt)
     if player:move_y(PLAYER_SPEED*dt, world) == true then
       jumping = 0
     end
+    viewport:center(player:getX(), player:getY())
   end
 
   world.physics:update(dt)
@@ -162,6 +176,10 @@ function love.draw()
     viewport:draw(books[i])
   end
   viewport:draw(brain)
+  
+  for i=1,#elevators do
+    viewport:draw(elevators[i])
+  end
 
   hud:draw(0,600-40, player.energy, player.books, #books, player.brain == 1)
 end
