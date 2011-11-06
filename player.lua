@@ -59,6 +59,7 @@ end
 function Player:jump()
   vx, vy = self.body:getLinearVelocity()
   if vy < 5 then
+    -- Look for a wall to the immediate left or right and suppress movement if there is one
     self.suppress = nil
     self.body:applyForce(0, -10000)
   end
