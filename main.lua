@@ -2,6 +2,7 @@
 require "loader"
 require "world"
 require "player"
+require "battery"
 require "viewport"
 
 -- Load Initial World
@@ -14,6 +15,10 @@ load_data = Loader:load("world_1")
 
 world = World:new():with(load_data.map)
 player = Player:new():with(load_data.start, world)
+batteries = {}
+for i=1,#load_data.batteries do
+  batteries[#batteries+1] = Battery:new():with(load_data.batteries[i], world)
+end
 
 viewport = Viewport:new()
 
@@ -76,4 +81,7 @@ function love.draw()
 
   viewport:draw(world)
   viewport:draw(player)
+  for i=1,#batteries do
+    viewport:draw(batteries[i])
+  end
 end

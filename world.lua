@@ -40,6 +40,8 @@ function World:with(map)
         tile.body = love.physics.newBody(self.physics, lx*32, ly*32, 0, 0)
         tile.shape = love.physics.newRectangleShape(tile.body, -16, -16, 32, 32, 0)
         tile.shape:setFriction(1.0)
+        tile.type = "wall"
+        tile.shape:setData(tile)
       end
     end
   end

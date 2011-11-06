@@ -14,9 +14,12 @@ end
 function Player:with(position, world)
   self.start = position
 
-  self.body = love.physics.newBody(world.physics, (position.x*32-32)+16, (position.y*32-32)+16, 10, 0)
+  self.body = love.physics.newBody(world.physics, position.x*32, position.y*32, 10, 0)
   self.shape = love.physics.newRectangleShape(self.body, -16, -16, 32, 32, 0)
   self.shape:setFriction(1.0)
+  self.type = "player"
+  self.shape:setData(self)
+
   return self
 end
 
