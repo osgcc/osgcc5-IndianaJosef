@@ -45,7 +45,7 @@ function Hud:draw(x, y, energy, knowledge, kmax, brain)
   love.graphics.print("Energy: " .. estr, x+40, y+15)
   love.graphics.print("Knowledge: " .. kstr .. "/" .. kmaxstr, x+170, y+15)
 
-  if energy < 0 then
+  if energy <= 0 then
     love.graphics.print("You LOSE!", x+350, y+15)
   elseif brain and knowledge == kmax then
     love.graphics.print("You WIN!", x+350, y+15)

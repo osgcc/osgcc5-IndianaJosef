@@ -43,7 +43,7 @@ function Loader:load(filename)
             batteries[#batteries+1] = {x = i+1, y = y}
           elseif chr == "{" then
             books[#books+1] = {x = i+1, y = y}
-          elseif chr == "~" then
+          elseif chr == "G" then
             brain = {x = i+1, y = y}
           elseif chr == "w" or chr == "a" or chr == "s" or chr == "d" then
             local elevator = {x = i+1, y = y, width = 1, direction = chr, ignore_tile = row[i+1]}

@@ -2,7 +2,7 @@
 
 -- Describes a single tile in the world
 
-Type = {WALL = 0, EMPTY = 1, START = 2, BREAKABLE = 3, STAIR_LEFT = 4, STAIR_RIGHT = 5}
+Type = {WALL = 0, EMPTY = 1, START = 2, BREAKABLE = 3, STAIR_LEFT = 4, STAIR_RIGHT = 5, DEADLY = 6}
 
 Tile = {tile_type = 0, action = 0, visible = true, stop = false, width = 1}
 
@@ -10,6 +10,7 @@ wall_img = love.graphics.newImage("img/wall.png")
 breakable_img = love.graphics.newImage("img/breakable.png")
 stair_left_img = love.graphics.newImage("img/stair_left.png")
 stair_right_img = love.graphics.newImage("img/stair_right.png")
+deadly_imgs = {lava = love.graphics.newImage("img/lava.png")}
 
 function Tile:new (o)
   o = o or {}
@@ -38,6 +39,9 @@ function Tile:with(type)
     self.stop = true
   elseif type == "d" then
     self.stop = true
+  elseif type == "~" then
+    self.tile_type = Type.DEADLY
+    self.deadly_type = "lava"
   else
     self.tile_type = Type.EMPTY
   end
@@ -58,5 +62,7 @@ function Tile:draw(x,y)
     love.graphics.draw(stair_right_img, x, y)
   elseif self.tile_type == Type.STAIR_LEFT then
     love.graphics.draw(stair_left_img, x, y)
+  elseif self.tile_type == Type.DEADLY then
+    love.graphics.draw(deadly_imgs[self.deadly_type], x, y)
   end
 end
