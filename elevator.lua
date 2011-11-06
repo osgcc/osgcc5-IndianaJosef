@@ -41,7 +41,7 @@ function Elevator:move(delta, player, world)
   end
   self:is_collided(player, world)
 
-  if self:is_collided_with_player_y(player, world) then
+  if self:is_player_riding(player, world) then
     if self.direction == "a" then
       player:move(-delta, world)
     elseif self.direction == "d" then
@@ -57,8 +57,9 @@ function Elevator:is_collided(player, world)
     y = y - 32
   elseif self.direction == "w" then
   elseif self.direction == "a" then
-  elseif self.direction == "d" then
     x = x - 32
+  elseif self.direction == "d" then
+    x = x - (32 * self.width) + 32
   end
 
   local wall = world:find_stop(x, y)
@@ -79,11 +80,17 @@ function Elevator:is_collided(player, world)
   return self:is_collided_with_player(player, world)
 end
 
+function Elevator:is_player_riding(player, world)
+  local ret = self:is_collided_with_player_y(player, world)
+
+  return ret and (player:getY() - 1 < self.body:getY())
+end
+
 function Elevator:is_collided_with_player(player, world)
   local r = player:getX()
   local b = player:getY() - 1
   local l = r - 32
-  local t = b - 31
+  local t = b - 30
 
   return self.shape:testPoint(r,b) or self.shape:testPoint(r,t) or self.shape:testPoint(l,b) or self.shape:testPoint(l,t)
 end
