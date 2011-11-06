@@ -30,14 +30,6 @@ function Player:draw(x, y)
   love.graphics.setColor(0,255,0)
   love.graphics.rectangle("fill", x1-x, y1-y, 32, 32)
   love.graphics.setColor(255,255,255)
-
-  local x2, y2 = self.body:getPosition()
-  local vx, vy = self.body:getLinearVelocity()
-  if vy >= 0 then
-    y2 = y2 - 32
-  end
-  love.graphics.rectangle("fill", x2-x-3, y2-y-3, 6, 6)
-  love.graphics.rectangle("fill", x2-x-32-3, y2-y-3, 6, 6)
 end
 
 function Player:move(delta)
