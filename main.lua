@@ -28,7 +28,7 @@ burned = {}
 function love.load()
   -- Size
   love.graphics.setMode(800,600,false,true,0)
-  love.graphics.setCaption("Foo")
+  love.graphics.setCaption("Indiana Josef")
 
   -- Load Initial World
   local load_data = Loader:load("world_3")
