@@ -14,6 +14,8 @@ function World:new (o)
   return o
 end
 
+text = "foo"
+
 function World:draw (x,y)
   for lx=1,self.width do
     for ly = 1,self.height do
@@ -21,6 +23,8 @@ function World:draw (x,y)
       tile:draw((lx*32-32)-x, (ly*32-32)-y)
     end
   end
+
+  love.graphics.print(text, 300, 300)
 end
 
 function World:with(map)
@@ -30,6 +34,49 @@ function World:with(map)
 
   self.physics = love.physics.newWorld(0,0,self.width*32,self.height*32)
   self.physics:setGravity(0, 1000)
+
+  self.add = function(a, b, coll)
+    local player, battery, wall
+    if a.type == "player" then
+      player = a
+    elseif b.type == "player" then
+      player = b
+    end
+
+    if a.type == "battery" then
+      battery = a
+    elseif b.type == "battery" then
+      battery = b
+    end
+    
+    if a.type == "wall" then
+      wall = a
+    elseif b.type == "wall" then
+      wall = b
+    end
+
+    if battery and player then
+      if battery.visible == true then
+        battery.visible = false
+        text = "bar"
+      end
+    end
+    
+    if player and wall then
+      -- determine if this is a wall blocking left and right velocity... if so, drop
+    end
+  end
+
+  self.persist = function(a, b, coll)
+  end
+
+  self.remove = function(a, b, coll)
+  end
+
+  self.result = function(a, b, coll)
+  end
+
+  self.physics:setCallbacks(self.add, self.persist, self.remove, self.result)
 
   -- Set up rigid bodies
 
