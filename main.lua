@@ -7,34 +7,36 @@ require "book"
 require "brain"
 require "viewport"
 
--- Load Initial World
-
 State = {REST = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2}
 state = State.REST
 keys_down = 0
 
-load_data = Loader:load("world_1")
+function love.load()
+  -- Size
+  love.graphics.setMode(800,600,false,true,0)
 
-world = World:new():with(load_data.map)
-player = Player:new():with(load_data.start, world)
-batteries = {}
-for i=1,#load_data.batteries do
-  batteries[#batteries+1] = Battery:new():with(load_data.batteries[i], world)
+  -- Load Initial World
+  local load_data = Loader:load("world_1")
+  
+  world = World:new():with(load_data.map)
+  player = Player:new():with(load_data.start, world)
+  batteries = {}
+  for i=1,#load_data.batteries do
+    batteries[#batteries+1] = Battery:new():with(load_data.batteries[i], world)
+  end
+  
+  books = {}
+  for i=1,#load_data.books do
+    books[#books+1] = Book:new():with(load_data.books[i], world)
+  end
+  
+  brain = Brain:new():with(load_data.brain, world)
+  
+  viewport = Viewport:new()
+  
+  viewport.x = 18
+  viewport.y = 15
 end
-
-books = {}
-for i=1,#load_data.books do
-  books[#books+1] = Book:new():with(load_data.books[i], world)
-end
-
-brain = Brain:new():with(load_data.brain, world)
-
-viewport = Viewport:new()
-
-viewport.x = 18
-viewport.y = 15
-
-load_data = nil
 
 -- Events
 
@@ -98,4 +100,10 @@ function love.draw()
     viewport:draw(books[i])
   end
   viewport:draw(brain)
+
+  love.graphics.setColor(0,0,0)
+  love.graphics.rectangle("line", 0, 600-40, 800, 40)
+  love.graphics.setColor(128, 128, 128)
+  love.graphics.rectangle("fill", 0, 600-40, 800, 40)
+  love.graphics.setColor(255, 255, 255)
 end

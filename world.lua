@@ -75,21 +75,18 @@ function World:with(map)
     if battery and player then
       if battery.visible == true then
         battery.visible = false
-        text = "bar"
       end
     end
 
     if book and player then
       if book.visible == true then
         book.visible = false
-        text = "bar"
       end
     end
 
     if brain and player then
       if brain.visible == true then
         brain.visible = false
-        text = "bar"
       end
     end
   end
@@ -107,7 +104,7 @@ function World:with(map)
       px = player.body:getX()
       py = player.body:getY()
       dist = math.sqrt((py-y)*(py-y))
-      text = dist
+
       if dist > 32 then
       else
         if px > x then
@@ -148,7 +145,6 @@ function World:find_wall(x, y)
       local tile = self.map[ly][lx]
       if tile.tile_type == Type.WALL then
         if tile.shape:testPoint(x,y) then
-          text = "found"
           return tile
         end
       end

@@ -59,17 +59,17 @@ end
 
 function Player:jump()
   local vx, vy = self.body:getLinearVelocity()
-  if vy < 5 then
+  if vy < 100 then
     self.suppress = nil
 
     -- Look for a wall to the immediate left or right and suppress movement if there is one
     local x, y = self.body:getPosition()
 
-    if world:find_wall(x+1,y) or world:find_wall(x+1,y-32) then
+    if world:find_wall(x+1,y-1) or world:find_wall(x+1,y-31) then
       self.suppress = 1
     end
 
-    if world:find_wall(x-33,y) or world:find_wall(x-33,y-32) then
+    if world:find_wall(x-33,y-1) or world:find_wall(x-33,y-31) then
       if self.suppress == 1 then
         self.suppress = 2
       else
@@ -95,7 +95,7 @@ function Player:update(world,dt)
   local x, y = self.body:getPosition()
 
   if player.suppress == 1 or player.suppress == 2 then
-    if world:find_wall(x+1,y) == nil and world:find_wall(x+1,y-32) == nil then
+    if world:find_wall(x+1,y-1) == nil and world:find_wall(x+1,y-31) == nil then
       if player.suppress == 2 then
         player.suppress = -1
       else
@@ -105,7 +105,7 @@ function Player:update(world,dt)
   end
 
   if player.suppress == -1 or player.suppress == 2 then
-    if world:find_wall(x-33,y) == nil and world:find_wall(x-33,y-32) == nil then
+    if world:find_wall(x-33,y-1) == nil and world:find_wall(x-33,y-31) == nil then
       if player.suppress == 2 then
         player.suppress = 1
       else
