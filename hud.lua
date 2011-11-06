@@ -20,7 +20,9 @@ function Hud:draw(x, y, energy, knowledge, kmax, brain)
 
   energy = math.floor(energy + 0.5)
   local estr = energy
-  if estr < 10 then
+  if estr < 0 then
+    estr = "000"
+  elseif estr < 10 then
     estr = "00" .. energy
   elseif estr < 100 then
     estr = "0" .. energy
@@ -42,11 +44,15 @@ function Hud:draw(x, y, energy, knowledge, kmax, brain)
 
   love.graphics.print("Energy: " .. estr, x+40, y+15)
   love.graphics.print("Knowledge: " .. kstr .. "/" .. kmaxstr, x+170, y+15)
-  love.graphics.print("Find: ", x+350, y+15)
 
-  if brain then
-    love.graphics.print("EXIT", x+385, y+15)
+  if energy < 0 then
+    love.graphics.print("You LOSE!", x+350, y+15)
+  elseif brain and knowledge == kmax then
+    love.graphics.print("You WIN!", x+350, y+15)
+  elseif brain then
+    love.graphics.print("Found the BRAIN!", x+350, y+15)
   else
+    love.graphics.print("Find: ", x+350, y+15)
     love.graphics.print("BRAIN", x+385, y+15)
   end
 end
