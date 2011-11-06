@@ -11,6 +11,28 @@ function Viewport:new(o)
   return o
 end
 
+function Viewport:with(world_width, world_height, width, height)
+  self.world_width = width
+  self.world_height = height
+  self.width = width
+  self.height = height
+
+  return self
+end
+
+function Viewport:center(x, y)
+  self.x = x - (self.width/2)
+  self.y = y - (self.height/2)
+
+  if self.x < 0 then
+    self.x = 0
+  end
+
+  if self.y < 0 then
+    self.y = 0
+  end
+end
+
 function Viewport:draw(obj)
   obj:draw(self.x, self.y)
 end

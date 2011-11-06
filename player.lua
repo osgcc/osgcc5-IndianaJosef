@@ -200,3 +200,11 @@ function Player:avoid_y(wall)
     end
   end
 end
+
+function Player:getX()
+  return self.body:getX()
+end
+
+function Player:getY()
+  return self.body:getY()
+end

@@ -26,25 +26,23 @@ function love.load()
 
   -- Load Initial World
   local load_data = Loader:load("world_2")
-  
+
   world = World:new():with(load_data.map)
   player = Player:new():with(load_data.start, world)
   batteries = {}
   for i=1,#load_data.batteries do
     batteries[#batteries+1] = Battery:new():with(load_data.batteries[i], world)
   end
-  
+
   books = {}
   for i=1,#load_data.books do
     books[#books+1] = Book:new():with(load_data.books[i], world)
   end
-  
+
   brain = Brain:new():with(load_data.brain, world)
-  
-  viewport = Viewport:new()
-  
-  viewport.x = 18
-  viewport.y = 15
+
+  viewport = Viewport:new():with(world.width*32,world.height*32,800,560)
+  viewport:center(player:getX(), player:getY())
 
   player.energy = load_data.energy
 
@@ -100,10 +98,12 @@ function love.update(dt)
     player:rest()
     player:move(-PLAYER_SPEED*dt, world)
     player.energy = player.energy - 10 * dt
+    viewport:center(player:getX(), player:getY())
   elseif state == State.MOVE_RIGHT then
     player:rest()
     player:move(PLAYER_SPEED*dt, world)
     player.energy = player.energy - 10 * dt
+    viewport:center(player:getX(), player:getY())
   end
 
   local i = 1
