@@ -4,6 +4,8 @@
 
 Battery = {visible = true}
 
+battery_img = love.graphics.newImage("img/battery.png")
+
 function Battery:new(o)
   o = o or {}
   setmetatable(o, self)
@@ -30,6 +32,6 @@ function Battery:draw(x, y)
   local x1,y1,x2,y2 = self.shape:getPoints()
 
   love.graphics.setColor(0,255,255)
-  love.graphics.rectangle("fill", x1-x, y1-y, 16, 16)
+  love.graphics.draw(battery_img, x1-x, y1-y)
   love.graphics.setColor(255,255,255)
 end

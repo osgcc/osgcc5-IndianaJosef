@@ -4,6 +4,8 @@
 
 Book = {visible = true}
 
+--book_img = love.graphics.newImage("img/book.png")
+
 function Book:new(o)
   o = o or {}
   setmetatable(o, self)
@@ -31,5 +33,6 @@ function Book:draw(x, y)
 
   love.graphics.setColor(255,255,0)
   love.graphics.rectangle("fill", x1-x, y1-y, 16, 16)
+  --love.graphics.draw(book_img, x1-x, y1-y)
   love.graphics.setColor(255,255,255)
 end

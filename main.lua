@@ -96,7 +96,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.setBackgroundColor(255,0,0)
+	love.graphics.setBackgroundColor(0,0,0)
 
   viewport:draw(world)
   viewport:draw(player)
